@@ -223,6 +223,8 @@ function getUserAccountData(int $userId): array
             }
         }
 
+        $row = \amnesia\formatUserAccountDataForOutput($row);
+
         $customProfileFields = \amnesia\getUserCustomProfileFields($userId);
         $row = array_merge($customProfileFields, $row);
 

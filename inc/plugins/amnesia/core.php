@@ -144,6 +144,23 @@ function getPersonalDataFieldDefinitions(bool $includeSensitive = false): array
     return $fieldDefinitions;
 }
 
+function formatUserAccountDataForOutput(array $user): array
+{
+    global $db, $plugins;
+
+    if (isset($user['regip'])) {
+        $user['regip'] = \my_inet_ntop($db->unescape_binary($user['regip']));
+    }
+
+    if (isset($user['lastip'])) {
+        $user['lastip'] = \my_inet_ntop($db->unescape_binary($user['lastip']));
+    }
+
+    $plugins->run_hooks('amnesia_format_user_account_data_for_output', $user);
+
+    return $user;
+}
+
 function formatDatabaseValueForOutput(string $value, string $type): string
 {
     global $db, $plugins;

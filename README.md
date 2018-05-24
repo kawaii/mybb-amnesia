@@ -38,7 +38,7 @@
   ```
   The multidimensional arrays with table names as keys (first level) contain a list of personal data fields (`fields`) with arbitrary type identifiers (`type`) used to classify values and group unique entries when exporting data. The user ID selector (`userIdSelector`) indicates a column that will be used to match a user by their ID.
 
-  - Register output formatting for custom field types with the `amnesia_format_database_value_for_output` hook taking as an array with `type` and `value` elements a parameter. The overwritten `value` element will be used in final output for the user.
+  - Register output formatting for custom field types with the `amnesia_format_database_value_for_output` hook taking an array with `type` and `value` elements a parameter. The overwritten `value` element will be used in final output for the user. Custom formatting for values stored in the `users` table can be registered with the `amnesia_format_user_account_data_for_output` hook accepting an array of user row values that can be overwritten.
 
 - #### Event Hooks
   The extension introduces new plugin hooks executed with certain actions:
