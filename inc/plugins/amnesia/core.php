@@ -7,46 +7,25 @@ function getPersonalAccountDataFields(): array
     global $plugins;
 
     $fields = [
-        'uid',
         'username',
         'email',
-        'postnum',
-        'threadnum',
         'avatar',
-        'avatardimensions',
-        'avatartype',
         'usertitle',
-        'regdate',
-        'lastactive',
-        'lastvisit',
-        'lastpost',
         'website',
         'icq',
         'yahoo',
         'skype',
         'google',
         'birthday',
-        'birthdayprivacy',
         'signature',
-        'hideemail',
-        'invisible',
         'timezone',
         'dst',
         'dstcorrection',
-        'away',
-        'awaydate',
-        'returndate',
         'awayreason',
         'notepad',
-        'referrer',
-        'referrals',
-        'reputation',
         'regip',
         'lastip',
         'language',
-        'timeonline',
-        'totalpms',
-        'unreadpms',
         'coppauser',
         'usernotes',
     ];
@@ -112,16 +91,7 @@ function getPersonalDataFieldDefinitions(bool $includeSensitive = false): array
         ],
         'threadratings' => [
             'fields' => [
-                'ipadress' => [
-                    'type' => 'ip',
-                    'anonymizedValue' => '',
-                ],
-            ],
-            'userIdSelector' => 'uid',
-        ],
-        'threads' => [
-            'fields' => [
-                'ipadress' => [
+                'ipaddress' => [
                     'type' => 'ip',
                     'anonymizedValue' => '',
                 ],
@@ -165,7 +135,7 @@ function getPersonalDataFieldDefinitions(bool $includeSensitive = false): array
     ];
 
     $fieldDefinitions = $plugins->run_hooks('amnesia_personal_data_field_definitions', $fieldDefinitions);
-    $sensitiveFieldDefinitions = $plugins->run_hooks('amnesia_personal_data_sensitive_field_definitions', $fieldDefinitions);
+    $sensitiveFieldDefinitions = $plugins->run_hooks('amnesia_personal_data_sensitive_field_definitions', $sensitiveFieldDefinitions);
 
     if ($includeSensitive) {
         $fieldDefinitions = array_merge($fieldDefinitions, $sensitiveFieldDefinitions);
@@ -174,13 +144,22 @@ function getPersonalDataFieldDefinitions(bool $includeSensitive = false): array
     return $fieldDefinitions;
 }
 
-function getRowUpdatesForFields(array $fields): array
+function formatDatabaseValueForOutput(string $value, string $type): string
 {
-    $rowUpdates = [];
+    global $db, $plugins;
 
-    foreach ($fields as $fieldName => $field) {
-        $rowUpdates[$fieldName] = $field['anonymizedValue'];
+    if ($type == 'ip') {
+        $value = \my_inet_ntop($db->unescape_binary($value));
     }
 
-    return $rowUpdates;
+    $arguments = [
+        'value' => $value,
+        'type' => $type,
+    ];
+
+    $plugins->run_hooks('amnesia_format_database_value_for_output', $arguments);
+
+    $value = $arguments['value'];
+
+    return $value;
 }

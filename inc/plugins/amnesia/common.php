@@ -84,16 +84,29 @@ function tpl(string $name): string
     $directory = MYBB_ROOT . 'inc/plugins/amnesia/templates/';
 
     if (DEVELOPMENT_MODE) {
-        return str_replace(
+        $templateContent = str_replace(
             "\\'",
             "'",
             addslashes(
                 file_get_contents($directory . $name . '.tpl')
             )
         );
+
+        if (!isset($templates->cache[$templateName]) && !isset($templates->uncached_templates[$templateName])) {
+            $templates->uncached_templates[$templateName] = $templateName;
+        }
+
+        return $templateContent;
     } else {
         return $templates->get($templateName);
     }
+}
+
+function replaceInTemplate(string $title, string $find, string $replace): bool
+{
+    require_once MYBB_ROOT . 'inc/adminfunctions_templates.php';
+
+    return \find_replace_templatesets($title, '#' . preg_quote($find, '#') . '#', $replace);
 }
 
 function getArrayWithColumnAsKey(array $array, string $column): array
