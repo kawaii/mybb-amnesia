@@ -112,7 +112,9 @@ function global_end(): void
     } elseif (\amnesia\privacyPolicyAgreementRequiredForCurrentUser()) {
         if (defined('THIS_SCRIPT')) {
             if (
-                !(THIS_SCRIPT == 'misc.php' && in_array($mybb->get_input('action'), ['helpresults', 'do_helpsearch', 'help'])) &&
+                !(THIS_SCRIPT == 'contact.php') &&
+                !(THIS_SCRIPT == 'member.php' && in_array($mybb->get_input('action'), ['logout', 'password', 'email'])) &&
+                !(THIS_SCRIPT == 'misc.php' && in_array($mybb->get_input('action'), ['helpresults', 'do_helpsearch', 'help', 'clearcookies'])) &&
                 !(THIS_SCRIPT == 'usercp.php' && in_array($mybb->get_input('action'), ['personal_data_erasure', 'personal_data_export']))
             ) {
                 $lang->load('amnesia');
