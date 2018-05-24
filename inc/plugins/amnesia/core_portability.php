@@ -142,7 +142,7 @@ function setSessionTokenForExportRequest(array $request): bool
     if ($request) {
         if (
             $mybb->user['uid'] != 0 &&
-            (int)$request['user_id'] === $mybb->user['uid'] &&
+            (int)$request['user_id'] === (int)$mybb->user['uid'] &&
             $request['action_date'] == 0
         ) {
             \my_setcookie('personal_data_export_session_token', $request['session_token'], 86400, true, 'strict');
