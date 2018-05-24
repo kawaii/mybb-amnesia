@@ -1,6 +1,6 @@
 <?php
 
-$l['amnesia_admin_pluginlibrary_missing'] = 'Add <a href="https://mods.mybb.com/view/pluginlibrary">PluginLibrary</a> in order to use the plugin';
+$l['amnesia_admin_pluginlibrary_missing'] = 'Add <a href="https://github.com/frostschutz/MyBB-PluginLibrary">PluginLibrary</a> in order to use the plugin';
 
 $l['amnesia_admin_personal_data_erasure_requests'] = 'Data Erasure Requests';
 $l['amnesia_admin_personal_data_erasure_requests_unapproved'] = 'Unapproved Requests';
