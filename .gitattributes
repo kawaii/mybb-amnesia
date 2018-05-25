@@ -1,5 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+*.tpl linguist-language=HTML
 
 .gitattributes export-ignore
 .gitignore export-ignore
