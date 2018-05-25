@@ -191,7 +191,14 @@ function outputUserPersonalDataXml(int $userId, bool $includeSensitive = false):
     $xml->appendChild($root);
 
     $userData = \amnesia\getUserPersonalData($userId, $includeSensitive);
-    \amnesia\appendArrayToXmlElement($userData, $xml, $root);
+
+    \amnesia\appendArrayToXmlElement([
+        'account' => $userData['account'],
+    ], $xml, $root, 'field', true);
+
+    \amnesia\appendArrayToXmlElement([
+        'metadata' => $userData['metadata'],
+    ], $xml, $root);
 
     \amnesia\outputXml($xml);
 }
@@ -290,19 +297,26 @@ function getUserContentMetadata(int $userId, bool $includeSensitive = false, boo
 }
 
 // internal
-function appendArrayToXmlElement(array $data, \DOMDocument $xml, \DOMElement $parent): void
+function appendArrayToXmlElement(array $data, \DOMDocument $xml, \DOMElement $parent, string $name = null, bool $nameRecursive = false): void
 {
     foreach ($data as $key => $value) {
         if (gettype($key) == 'integer') {
             $key = 'value';
         }
 
-        $element = $xml->createElement($key);
+        if ($name) {
+            $element = $xml->createElement($name);
+            $attribute = $xml->createAttribute('name');
+            $attribute->value = $key;
+            $element->appendChild($attribute);
+        } else {
+            $element = $xml->createElement($key);
+        }
 
         $parent->appendChild($element);
 
         if (is_array($value)) {
-            appendArrayToXmlElement($value, $xml, $element);
+            appendArrayToXmlElement($value, $xml, $element, $nameRecursive ? $name : null, $nameRecursive);
         } else {
             $element->nodeValue = $value;
         }
