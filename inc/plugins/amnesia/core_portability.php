@@ -281,7 +281,9 @@ function getUserContentMetadata(int $userId, bool $includeSensitive = false, boo
                 while ($row = $db->fetch_array($query)) {
                     $value = \amnesia\formatDatabaseValueForOutput($row[$fieldName], $field['type']);
 
-                    $data[ $field['type'] ][] = $value;
+                    if ($value !== '') {
+                        $data[$field['type']][] = $value;
+                    }
                 }
             }
         }
