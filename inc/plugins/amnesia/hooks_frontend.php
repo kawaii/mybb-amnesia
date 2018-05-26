@@ -80,46 +80,32 @@ function global_end(): void
     global $mybb, $lang,
     $headerinclude, $header, $theme, $footer;
 
-    if (\amnesia\personalDataErasurePendingForCurrentUser()) {
-        $request = \amnesia\getPendingUserErasureRequest($mybb->user['uid']);
+    if (!defined('THIS_SCRIPT') || !\amnesia\pageAlwaysAccessible(\THIS_SCRIPT, $mybb->get_input('action'))) {
+        if (\amnesia\personalDataErasurePendingForCurrentUser()) {
+            $request = \amnesia\getPendingUserErasureRequest($mybb->user['uid']);
 
-        $lang->load('amnesia');
+            $lang->load('amnesia');
 
-        $message = $lang->amnesia_personal_data_erasure_pending_message;
+            $message = $lang->amnesia_personal_data_erasure_pending_message;
 
-        if ($request) {
-            if ($mybb->get_input('cancel_personal_data_erasure')) {
-                if (\verify_post_check($mybb->get_input('my_post_key'))) {
-                    \amnesia\cancelErasureRequest($request);
-                    \redirect($mybb->settings['bburl']);
+            if ($request) {
+                if ($request['scheduled_date'] > \TIME_NOW) {
+                    $date = \my_date($mybb->settings['dateformat'], $request['scheduled_date']);
+                    $message .= ' ' . $lang->sprintf($lang->amnesia_personal_data_erasure_scheduled_for, $date);
+                }
+
+                if (\amnesia\getSettingValue('personal_data_erasure_approval')) {
+                    $message .= ' ' . $lang->amnesia_personal_data_erasure_approval;
                 }
             }
 
-            if ($request['scheduled_date'] > \TIME_NOW) {
-                $date = \my_date($mybb->settings['dateformat'], $request['scheduled_date']);
-                $message .= ' ' . $lang->sprintf($lang->amnesia_personal_data_erasure_scheduled_for, $date);
-            }
+            eval('$page = "' . \amnesia\tpl('personal_data_erasure_pending') . '";');
 
-            if (\amnesia\getSettingValue('personal_data_erasure_approval')) {
-                $message .= ' ' . $lang->amnesia_personal_data_erasure_approval;
-            }
-        }
-
-        eval('$page = "' . \amnesia\tpl('personal_data_erasure_pending') . '";');
-
-        \output_page($page);
-        exit;
-    } elseif (\amnesia\privacyPolicyAgreementRequiredForCurrentUser()) {
-        if (defined('THIS_SCRIPT')) {
-            if (
-                !(THIS_SCRIPT == 'contact.php') &&
-                !(THIS_SCRIPT == 'member.php' && in_array($mybb->get_input('action'), ['logout'])) &&
-                !(THIS_SCRIPT == 'misc.php' && in_array($mybb->get_input('action'), ['helpresults', 'do_helpsearch', 'help', 'clearcookies'])) &&
-                !(THIS_SCRIPT == 'usercp.php' && in_array($mybb->get_input('action'), ['password', 'do_password', 'email', 'do_email', 'personal_data_erasure', 'personal_data_export']))
-            ) {
-                $lang->load('amnesia');
-                \redirect(\amnesia\getPrivacyPolicyUrl(), $lang->amnesia_privacy_policy_agreement_required);
-            }
+            \output_page($page);
+            exit;
+        } elseif (\amnesia\privacyPolicyAgreementRequiredForCurrentUser()) {
+            $lang->load('amnesia');
+            \redirect(\amnesia\getPrivacyPolicyUrl(), $lang->amnesia_privacy_policy_agreement_required);
         }
     }
 }
@@ -137,7 +123,16 @@ function usercp_start()
 
             $errors = [];
 
-            if ($mybb->get_input('password')) {
+            if ($mybb->get_input('cancel_personal_data_erasure')) {
+                if (\verify_post_check($mybb->get_input('my_post_key'))) {
+                    $request = \amnesia\getPendingUserErasureRequest($mybb->user['uid']);
+
+                    if ($request) {
+                        \amnesia\cancelErasureRequest($request);
+                        \redirect($mybb->settings['bburl']);
+                    }
+                }
+            } elseif ($mybb->get_input('password')) {
                 if (\verify_post_check($mybb->get_input('my_post_key'))) {
                     if (
                         $mybb->get_input('with_content') != '1' ||

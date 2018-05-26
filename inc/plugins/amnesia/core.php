@@ -180,3 +180,35 @@ function formatDatabaseValueForOutput(string $value, string $type): string
 
     return $value;
 }
+
+function pageAlwaysAccessible(string $filename, string $action): bool
+{
+    $actions = [
+        'contact.php' => true,
+        'member.php' => [
+            'logout',
+        ],
+        'misc.php' => [
+            'helpresults',
+            'do_helpsearch',
+            'help',
+            'clearcookies',
+        ],
+        'usercp.php' => [
+            'password',
+            'do_password',
+            'email',
+            'do_email',
+            'personal_data_erasure',
+            'personal_data_export',
+        ],
+    ];
+
+    return (
+        in_array($filename, array_keys($actions)) &&
+        (
+            $actions[$filename] === true ||
+            in_array($action, $actions[$filename])
+        )
+    );
+}
