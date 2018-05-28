@@ -162,10 +162,15 @@ function admin_load()
                 ");
 
                 while ($row = $db->fetch_array($query)) {
-                    $profileLink = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
+                    if ($row['username'] === null) {
+                        $user = $lang->sprintf($lang->amnesia_admin_user_id, $row['user_id']);
+                    } else {
+                        $user = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
+                    }
+
                     $withContent = $row['with_content'] ? $lang->yes : $lang->no;
 
-                    $table->construct_cell($profileLink, ['class' => 'align_center']);
+                    $table->construct_cell($user, ['class' => 'align_center']);
                     $table->construct_cell(\my_date('relative', $row['date']), ['class' => 'align_center']);
                     $table->construct_cell(\my_date('relative', $row['scheduled_date']), ['class' => 'align_center']);
                     $table->construct_cell(\my_date('relative', $row['action_date']), ['class' => 'align_center']);

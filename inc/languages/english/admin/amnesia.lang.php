@@ -10,6 +10,7 @@ $l['amnesia_admin_personal_data_erasure_requests_completed'] = 'Completed Reques
 $l['amnesia_admin_personal_data_erasure_requests_completed_description'] = 'This section allows you to view completed erasure requests.';
 
 $l['amnesia_admin_user'] = 'User';
+$l['amnesia_admin_user_id'] = 'ID {1}';
 $l['amnesia_admin_date'] = 'Date';
 $l['amnesia_admin_scheduled_date'] = 'Scheduled for';
 $l['amnesia_admin_action_date'] = 'Erased';
