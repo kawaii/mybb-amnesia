@@ -61,7 +61,6 @@
 ### Plugin Management Events
 - **Install:**
   - Database structure created/altered
-  - Settings populated
   - Cache entries created
   - Tasks registered
 - **Uninstall:**
@@ -70,6 +69,7 @@
   - Cache entries removed
   - Tasks removed
 - **Activate:**
+  - Settings populated/updated
   - Templates & stylesheets inserted/altered
 - **Deactivate:**
   - Templates & stylesheets removed/restored

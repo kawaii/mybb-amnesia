@@ -34,7 +34,7 @@ function amnesia_info()
 
 function amnesia_install()
 {
-    global $PL, $db, $cache;
+    global $db, $cache;
 
     amnesia_admin_load_pluginlibrary();
 
@@ -169,84 +169,6 @@ function amnesia_install()
             break;
     }
 
-    // settings
-    $PL->settings(
-        'amnesia',
-        'Amnesia',
-        'Settings for the Amnesia extension (Privacy Policy, Personal Data Export and Erasure).',
-        [
-            'privacy_policy_require_agreement' => [
-                'title'       => 'Privacy Policy: Require Agreement',
-                'description' => 'Require users to accept the published privacy policy before using the forums.',
-                'optionscode' => 'yesno',
-                'value'       => '0',
-            ],
-            'privacy_policy_document_id' => [
-                'title'       => 'Privacy Policy: Help Document ID',
-                'description' => 'Set the Help Document ID where the Privacy Policy is located.',
-                'optionscode' => 'numeric',
-                'value'       => '0',
-            ],
-            'privacy_policy_date' => [
-                'title'       => 'Privacy Policy: Date',
-                'description' => 'ISO 8601 formatted date of last privacy policy update. Depending on the setting above, users will need to accept the latest version of the document.',
-                'optionscode' => 'text',
-                'value'       => date('c'),
-            ],
-            'personal_data_export' => [
-                'title'       => 'Personal Data Export',
-                'description' => 'Allow users to export their personal data in the User CP.',
-                'optionscode' => 'yesno',
-                'value'       => '1',
-            ],
-            'personal_data_export_include_sensitive' => [
-                'title'       => 'Personal Data Export: Include Sensitive Fields',
-                'description' => 'Choose whether to provide metadata from sensitive sources like the Administrator and Moderator logs.',
-                'optionscode' => 'yesno',
-                'value'       => '0',
-            ],
-            'personal_data_erasure_type' => [
-                'title'       => 'Erasure',
-                'description' => 'Allow users to anonymize their accounts by removing personal data or completely deleting them, assigning posted content to <i>Guest</i>.',
-                'optionscode' => 'select
-none=Disabled
-anonymization=Anonymization
-deletion=Deletion',
-                'value'       => 'anonymization',
-            ],
-            'personal_data_erasure_content' => [
-                'title'       => 'Erasure: Content Deletion',
-                'description' => 'Allow users to delete posted content along with their accounts (works only with <i>Deletion</i> selected above).',
-                'optionscode' => 'yesno',
-                'value'       => '0',
-            ],
-            'personal_data_erasure_waiting_period_days' => [
-                'title'       => 'Erasure: Waiting Period (days)',
-                'description' => 'Number of days that have to pass after the initial request for data to be erased. Set 0 for no waiting period.',
-                'optionscode' => 'numeric',
-                'value'       => '7',
-            ],
-            'personal_data_erasure_approval' => [
-                'title'       => 'Erasure: Administrator Approval',
-                'description' => 'Choose whether erasure requests should be approved by forum administrators before actual operation.',
-                'optionscode' => 'yesno',
-                'value'       => '1',
-            ],
-            'personal_data_erasure_group' => [
-                'title'       => 'Erasure: User Group',
-                'description' => 'Select which user group accounts with erased data will be added to (if applicable).',
-                'optionscode' => 'groupselectsingle',
-                'value'       => '',
-            ],
-            'personal_data_erasure_include_sensitive' => [
-                'title'       => 'Erasure: Include Sensitive Fields',
-                'description' => 'Choose whether to erase sensitive information like the Administrator and Moderator logs (if applicable).',
-                'optionscode' => 'yesno',
-                'value'       => '0',
-            ],
-        ]
-    );
-
     // datacache
     $cache->update('amnesia', [
         'privacy_policy_date' => null,
@@ -327,6 +249,84 @@ function amnesia_activate()
     global $PL;
 
     amnesia_admin_load_pluginlibrary();
+
+    // settings
+    $PL->settings(
+        'amnesia',
+        'Amnesia',
+        'Settings for the Amnesia extension (Privacy Policy, Personal Data Export and Erasure).',
+        [
+            'privacy_policy_require_agreement' => [
+                'title'       => 'Privacy Policy: Require Agreement',
+                'description' => 'Require users to accept the published privacy policy before using the forums.',
+                'optionscode' => 'yesno',
+                'value'       => '0',
+            ],
+            'privacy_policy_document_id' => [
+                'title'       => 'Privacy Policy: Help Document ID',
+                'description' => 'Set the Help Document ID where the Privacy Policy is located.',
+                'optionscode' => 'numeric',
+                'value'       => '0',
+            ],
+            'privacy_policy_date' => [
+                'title'       => 'Privacy Policy: Date',
+                'description' => 'ISO 8601 formatted date of last privacy policy update. Depending on the setting above, users will need to accept the latest version of the document.',
+                'optionscode' => 'text',
+                'value'       => date('c'),
+            ],
+            'personal_data_export' => [
+                'title'       => 'Personal Data Export',
+                'description' => 'Allow users to export their personal data in the User CP.',
+                'optionscode' => 'yesno',
+                'value'       => '1',
+            ],
+            'personal_data_export_include_sensitive' => [
+                'title'       => 'Personal Data Export: Include Sensitive Fields',
+                'description' => 'Choose whether to provide metadata from sensitive sources like the Administrator and Moderator logs.',
+                'optionscode' => 'yesno',
+                'value'       => '0',
+            ],
+            'personal_data_erasure_type' => [
+                'title'       => 'Erasure',
+                'description' => 'Allow users to anonymize their accounts by removing personal data or completely deleting them.',
+                'optionscode' => 'select
+none=Disabled
+anonymization=Anonymization
+deletion=Deletion',
+                'value'       => 'anonymization',
+            ],
+            'personal_data_erasure_content' => [
+                'title'       => 'Erasure: Content Deletion',
+                'description' => 'Allow users to delete posted content along with their accounts (works only with <i>Deletion</i> selected above).',
+                'optionscode' => 'yesno',
+                'value'       => '0',
+            ],
+            'personal_data_erasure_waiting_period_days' => [
+                'title'       => 'Erasure: Waiting Period (days)',
+                'description' => 'Number of days that have to pass after the initial request for data to be erased. Set 0 for no waiting period.',
+                'optionscode' => 'numeric',
+                'value'       => '7',
+            ],
+            'personal_data_erasure_approval' => [
+                'title'       => 'Erasure: Administrator Approval',
+                'description' => 'Choose whether erasure requests should be approved by forum administrators before actual operation.',
+                'optionscode' => 'yesno',
+                'value'       => '1',
+            ],
+            'personal_data_erasure_group' => [
+                'title'       => 'Erasure: User Group',
+                'description' => 'Select which user group accounts with erased data will be added to (if applicable).',
+                'optionscode' => 'groupselectsingle',
+                'value'       => '',
+            ],
+            'personal_data_erasure_include_sensitive' => [
+                'title'       => 'Erasure: Include Sensitive Fields',
+                'description' => 'Choose whether to erase sensitive information like the Administrator and Moderator logs (if applicable).',
+                'optionscode' => 'yesno',
+                'value'       => '0',
+            ],
+        ]
+    );
 
     // templates
     $templates = [];
