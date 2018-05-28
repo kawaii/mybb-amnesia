@@ -311,7 +311,8 @@ function anonymizeUser(int $userId): bool
 
 function deleteUserAndContentMetadata(int $userId, bool $withContent = false): bool
 {
-    $result = \amnesia\deleteUserContentMetadata($userId);
+    $result = \amnesia\anonymizeUserProfile($userId);
+    $result &= \amnesia\deleteUserContentMetadata($userId);
     $result &= \amnesia\deleteUser($userId, $withContent);
 
     return $result;
