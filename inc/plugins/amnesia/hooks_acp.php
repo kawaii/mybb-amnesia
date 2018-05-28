@@ -199,6 +199,10 @@ function admin_config_settings_change_commit(): void
     if (isset($mybb->input['upsetting']['amnesia_privacy_policy_date'])) {
         \amnesia\reloadPrivacyPolicyDateFromSettings();
     }
+
+    if (isset($mybb->input['upsetting']['amnesia_personal_data_erasure_approval'])) {
+        \amnesia\recountCachedUnapprovedPendingErasureRequests();
+    }
 }
 
 function admin_user_action_handler(array &$actions): void
