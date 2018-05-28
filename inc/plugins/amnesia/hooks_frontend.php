@@ -358,7 +358,7 @@ function member_register_agreement(): void
         $url = \amnesia\getPrivacyPolicyUrl();
 
         $statement = $lang->sprintf($lang->amnesia_privacy_policy_signup_statement, $url);
-        $privacyPolicyDate = \amnesia\getCacheValue('privacy_policy_date');
+        $privacyPolicyDate = \TIME_NOW;
 
         eval('$privacyPolicyAgreement = "' . \amnesia\tpl('privacy_policy_signup_statement') . '";');
     } else {
