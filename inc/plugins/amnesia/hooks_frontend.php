@@ -180,7 +180,7 @@ function usercp_start()
                 $description = $lang->amnesia_personal_data_erasure_description;
 
                 if (\amnesia\getSettingValue('personal_data_erasure_waiting_period_days') != 0) {
-                    $description .= ' ' . $lang->sprintf($lang->amnesia_erasure_waiting_period_days, \amnesia\getSettingValue('personal_data_erasure_waiting_period_days'));
+                    $description .= ' ' . $lang->sprintf($lang->amnesia_personal_data_erasure_waiting_period_days, \amnesia\getSettingValue('personal_data_erasure_waiting_period_days'));
                 }
 
                 if (\amnesia\getSettingValue('personal_data_erasure_approval')) {
