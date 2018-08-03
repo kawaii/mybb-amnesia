@@ -20,6 +20,11 @@ function admin_load()
             'title'       => $lang->amnesia_admin_personal_data_erasure_requests_unapproved,
             'description' => $lang->amnesia_admin_personal_data_erasure_requests_unapproved_description,
         ];
+        $sub_tabs['scheduled'] = [
+            'link'        => $pageUrl . '&action=scheduled',
+            'title'       => $lang->amnesia_admin_personal_data_erasure_requests_scheduled,
+            'description' => $lang->amnesia_admin_personal_data_erasure_requests_scheduled_description,
+        ];
         $sub_tabs['completed'] = [
             'link'        => $pageUrl . '&action=completed',
             'title'       => $lang->amnesia_admin_personal_data_erasure_requests_completed,
@@ -115,6 +120,54 @@ function admin_load()
             }
 
             $table->output($lang->amnesia_admin_personal_data_erasure_requests);
+        } elseif ($mybb->input['action'] == 'scheduled') {
+            $page->output_header($lang->amnesia_admin_personal_data_erasure_requests);
+            $page->output_nav_tabs($sub_tabs, 'scheduled');
+
+            if (\amnesia\getSettingValue('personal_data_erasure_approval')) {
+                $approved = 'AND approved = 1';
+            } else {
+                $approved = '';
+            }
+
+            $query = $db->query("
+                SELECT
+                    r.*,
+                    u.username
+                FROM
+                    " . $db->table_prefix . "erasure_requests r
+                    LEFT JOIN " . $db->table_prefix . "users u ON u.uid = r.user_id
+                WHERE
+                    completed = 0 AND
+                    verified = 1
+                    " . $approved
+            );
+
+            $table = new \Table;
+            $table->construct_header($lang->amnesia_admin_user, ['width' => '22%', 'class' => 'align_center']);
+            $table->construct_header($lang->amnesia_admin_date, ['width' => '22%', 'class' => 'align_center']);
+            $table->construct_header($lang->amnesia_admin_scheduled_date, ['width' => '22%', 'class' => 'align_center']);
+            $table->construct_header($lang->amnesia_admin_with_content, ['width' => '7%', 'class' => 'align_center']);
+            $table->construct_header($lang->amnesia_admin_comment, ['width' => '27%', 'class' => 'align_center']);
+
+            if ($db->num_rows($query)) {
+                while ($row = $db->fetch_array($query)) {
+                    $profileLink = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
+                    $withContent = $row['with_content'] ? $lang->yes : $lang->no;
+
+                    $table->construct_cell($profileLink, ['class' => 'align_center']);
+                    $table->construct_cell(\my_date('relative', $row['date']), ['class' => 'align_center']);
+                    $table->construct_cell(\my_date('relative', $row['scheduled_date']), ['class' => 'align_center']);
+                    $table->construct_cell($withContent, ['class' => 'align_center']);
+                    $table->construct_cell(\htmlspecialchars_uni($row['comment']), ['class' => 'align_center']);
+                    $table->construct_row();
+                }
+            } else {
+                $table->construct_cell($lang->amnesia_admin_personal_data_erasure_requests_scheduled_empty, ['colspan' => '5', 'class' =>  'align_center']);
+                $table->construct_row();
+            }
+
+            $table->output($lang->amnesia_admin_personal_data_erasure_requests_scheduled);
         } elseif ($mybb->input['action'] == 'completed') {
             $page->output_header($lang->amnesia_admin_personal_data_erasure_requests);
             $page->output_nav_tabs($sub_tabs, 'completed');
