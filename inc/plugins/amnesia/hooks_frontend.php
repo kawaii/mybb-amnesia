@@ -132,7 +132,7 @@ function usercp_start()
                         \redirect($mybb->settings['bburl']);
                     }
                 }
-            } elseif ($mybb->get_input('password')) {
+            } elseif (isset($mybb->input['password'])) {
                 if (\verify_post_check($mybb->get_input('my_post_key'))) {
                     if (
                         $mybb->get_input('with_content') != '1' ||
@@ -206,7 +206,7 @@ function usercp_start()
 
             $errors = [];
 
-            if ($mybb->get_input('password')) {
+            if (isset($mybb->input['password'])) {
                 if (\verify_post_check($mybb->get_input('my_post_key'))) {
                     if (\validate_password_from_uid($mybb->user['uid'], $mybb->get_input('password'))) {
                         $requestId = \amnesia\createExportRequest($mybb->user);
