@@ -20,10 +20,10 @@ function admin_load()
             'title'       => $lang->amnesia_admin_personal_data_erasure_requests_unapproved,
             'description' => $lang->amnesia_admin_personal_data_erasure_requests_unapproved_description,
         ];
-        $sub_tabs['scheduled'] = [
-            'link'        => $pageUrl . '&action=scheduled',
-            'title'       => $lang->amnesia_admin_personal_data_erasure_requests_scheduled,
-            'description' => $lang->amnesia_admin_personal_data_erasure_requests_scheduled_description,
+        $sub_tabs['pending'] = [
+            'link'        => $pageUrl . '&action=pending',
+            'title'       => $lang->amnesia_admin_personal_data_erasure_requests_pending,
+            'description' => $lang->amnesia_admin_personal_data_erasure_requests_pending_description,
         ];
         $sub_tabs['completed'] = [
             'link'        => $pageUrl . '&action=completed',
@@ -120,9 +120,9 @@ function admin_load()
             }
 
             $table->output($lang->amnesia_admin_personal_data_erasure_requests);
-        } elseif ($mybb->input['action'] == 'scheduled') {
+        } elseif ($mybb->input['action'] == 'pending') {
             $page->output_header($lang->amnesia_admin_personal_data_erasure_requests);
-            $page->output_nav_tabs($sub_tabs, 'scheduled');
+            $page->output_nav_tabs($sub_tabs, 'pending');
 
             if (\amnesia\getSettingValue('personal_data_erasure_approval')) {
                 $approved = 'AND approved = 1';
@@ -163,11 +163,11 @@ function admin_load()
                     $table->construct_row();
                 }
             } else {
-                $table->construct_cell($lang->amnesia_admin_personal_data_erasure_requests_scheduled_empty, ['colspan' => '5', 'class' =>  'align_center']);
+                $table->construct_cell($lang->amnesia_admin_personal_data_erasure_requests_pending_empty, ['colspan' => '5', 'class' =>  'align_center']);
                 $table->construct_row();
             }
 
-            $table->output($lang->amnesia_admin_personal_data_erasure_requests_scheduled);
+            $table->output($lang->amnesia_admin_personal_data_erasure_requests_pending);
         } elseif ($mybb->input['action'] == 'completed') {
             $page->output_header($lang->amnesia_admin_personal_data_erasure_requests);
             $page->output_nav_tabs($sub_tabs, 'completed');

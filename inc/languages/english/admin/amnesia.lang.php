@@ -6,8 +6,8 @@ $l['amnesia_admin_personal_data_erasure_requests'] = 'Data Erasure Requests';
 $l['amnesia_admin_personal_data_erasure_requests_unapproved'] = 'Unapproved Requests';
 $l['amnesia_admin_personal_data_erasure_requests_unapproved_description'] = 'This section allows you to manage personal data erasure requests.';
 
-$l['amnesia_admin_personal_data_erasure_requests_scheduled'] = 'Scheduled Requests';
-$l['amnesia_admin_personal_data_erasure_requests_scheduled_description'] = 'This section allows you to view scheduled erasure requests.';
+$l['amnesia_admin_personal_data_erasure_requests_pending'] = 'Pending Requests';
+$l['amnesia_admin_personal_data_erasure_requests_pending_description'] = 'This section allows you to view pending erasure requests.';
 
 $l['amnesia_admin_personal_data_erasure_requests_completed'] = 'Completed Requests';
 $l['amnesia_admin_personal_data_erasure_requests_completed_description'] = 'This section allows you to view completed erasure requests.';
@@ -22,7 +22,7 @@ $l['amnesia_admin_comment'] = 'Comment';
 $l['amnesia_admin_approve'] = 'Approve';
 $l['amnesia_admin_cancel'] = 'Cancel';
 $l['amnesia_admin_personal_data_erasure_requests_unapproved_empty'] = 'No requests awaiting approval.';
-$l['amnesia_admin_personal_data_erasure_requests_scheduled_empty'] = 'No scheduled requests.';
+$l['amnesia_admin_personal_data_erasure_requests_pending_empty'] = 'No pending requests.';
 $l['amnesia_admin_personal_data_erasure_requests_completed_empty'] = 'No completed requests.';
 $l['amnesia_admin_personal_data_erasure_approve_confirm_title'] = 'Confirm request approval';
 $l['amnesia_admin_personal_data_erasure_approve_confirm_message'] = 'Are you sure you want to approve the selected erasure request?';
