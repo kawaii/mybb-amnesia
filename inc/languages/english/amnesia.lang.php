@@ -4,6 +4,7 @@ $l['amnesia_privacy_policy_agreement_required'] = 'Please read and accept the Pr
 $l['amnesia_privacy_policy_signup_statement'] = 'By continuing you agree to the <a href="{1}">Privacy Policy</a>.';
 $l['amnesia_privacy_policy_accept'] = 'Accept';
 $l['amnesia_privacy_policy_date'] = 'Last updated {1}';
+$l['amnesia_privacy_policy_date_last_read'] = 'Accepted {1}';
 $l['amnesia_privacy_policy_accepted'] = 'Thank you, you will now be redirected back.';
 
 $l['amnesia_personal_data_erasure'] = 'Personal Data Erasure';

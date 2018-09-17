@@ -335,13 +335,19 @@ function misc_help_helpdoc_end(): void
             eval('$footer = "' . \amnesia\tpl('privacy_policy_controls') . '" . $footer;');
         }
 
-        // date
-        $privacyPolicyDateFormatted = \my_date('relative', $privacyPolicyDate);
-
+        // dates
         if ($privacyPolicyDate <= \TIME_NOW) {
+            $privacyPolicyDateFormatted = \my_date('relative', $privacyPolicyDate);
             $privacyPolicyDateUpdated = $lang->sprintf($lang->amnesia_privacy_policy_date, $privacyPolicyDateFormatted);
         } else {
             $privacyPolicyDateUpdated = '';
+        }
+
+        if ($mybb->user['privacy_policy_last_read']) {
+            $privacyPolicyDateLastReadFormatted = \my_date('relative', $mybb->user['privacy_policy_last_read']);
+            $privacyPolicyDateLastRead = $lang->sprintf($lang->amnesia_privacy_policy_date_last_read, $privacyPolicyDateLastReadFormatted);
+        } else {
+            $privacyPolicyDateLastRead = '';
         }
 
         eval('$footer = "' . \amnesia\tpl('privacy_policy_date') . '" . $footer;');
