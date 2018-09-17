@@ -20,6 +20,7 @@ function global_start(): void
                 \amnesia\loadTemplates([
                     'privacy_policy_date',
                     'privacy_policy_controls',
+                    'personal_data_links',
                 ], 'amnesia_');
             }
 
@@ -73,12 +74,31 @@ function global_intermediate()
             eval('$awaitingPersonalDataErasureRequests = "' . $templates->get('global_awaiting_activation') . '";');
         }
     }
+
+    if ($mybb->usergroup['canview'] == 0) {
+        if (defined('THIS_SCRIPT') &&
+            (\amnesia\pageAlwaysAccessible(\THIS_SCRIPT, $mybb->get_input('action'))) ||
+            \amnesia\personalDataErasurePendingForCurrentUser()
+        ) {
+            $GLOBALS['amnesiaSuspsendedUsergroupPermissions']['canview'] = $mybb->usergroup['canview'];
+            $mybb->usergroup['canview'] = 1;
+
+            if (\THIS_SCRIPT == 'usercp.php') {
+                $mybb->usergroup['canusercp'] = 1;
+                $GLOBALS['amnesiaSuspsendedUsergroupPermissions']['canusercp'] = $mybb->usergroup['canusercp'];
+            }
+        }
+    }
 }
 
 function global_end(): void
 {
     global $mybb, $lang,
     $headerinclude, $header, $theme, $footer;
+
+    if (isset($GLOBALS['amnesiaSuspsendedUsergroupPermissions']['canview'])) {
+        $mybb->usergroup['canview'] = $GLOBALS['amnesiaSuspsendedUsergroupPermissions']['canview'];
+    }
 
     if (!defined('THIS_SCRIPT') || !\amnesia\pageAlwaysAccessible(\THIS_SCRIPT, $mybb->get_input('action'))) {
         if (\amnesia\personalDataErasurePendingForCurrentUser()) {
@@ -320,17 +340,19 @@ function misc_help_helpdoc_end(): void
             $loadTimeUnix = \TIME_NOW;
             $urlBeforeRedirect = \htmlspecialchars_uni($_SERVER['HTTP_REFERER']);
 
-            $personalDataLinks = '';
+            $links = '';
 
             if (\amnesia\getSettingValue('personal_data_export')) {
                 $url = 'usercp.php?action=personal_data_export';
-                eval('$personalDataLinks .= "' . \amnesia\tpl('personal_data_export_link') . '";');
+                eval('$links .= "' . \amnesia\tpl('personal_data_export_link') . '";');
             }
 
             if (\amnesia\getSettingValue('personal_data_erasure_type') != 'none') {
                 $url = 'usercp.php?action=personal_data_erasure';
-                eval('$personalDataLinks .= "' . \amnesia\tpl('personal_data_erasure_link') . '";');
+                eval('$links .= "' . \amnesia\tpl('personal_data_erasure_link') . '";');
             }
+
+            eval('$personalDataLinks = "' . \amnesia\tpl('personal_data_links') . '";');
 
             eval('$footer = "' . \amnesia\tpl('privacy_policy_controls') . '" . $footer;');
         }
@@ -388,4 +410,25 @@ function member_do_register_end(): void
     if ($date) {
         \amnesia\setPrivacyPolicyLastReadForUser($user_info['uid'], $date);
     }
+}
+
+function no_permission(): void
+{
+    global $lang, $footer;
+
+    $lang->load('amnesia');
+
+    $links = '';
+
+    if (\amnesia\getSettingValue('personal_data_export')) {
+        $url = 'usercp.php?action=personal_data_export';
+        eval('$links .= "' . \amnesia\tpl('personal_data_export_link') . '";');
+    }
+
+    if (\amnesia\getSettingValue('personal_data_erasure_type') != 'none') {
+        $url = 'usercp.php?action=personal_data_erasure';
+        eval('$links .= "' . \amnesia\tpl('personal_data_erasure_link') . '";');
+    }
+
+    eval('$footer = "' . \amnesia\tpl('personal_data_links') . '" . $footer;');
 }

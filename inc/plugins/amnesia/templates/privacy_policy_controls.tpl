@@ -6,6 +6,4 @@
         <input type="submit" name="accept_privacy_policy" value="{$lang->amnesia_privacy_policy_accept}" class="button" />
     </form>
 </div>
-<div style="text-align: center;">
-    {$personalDataLinks}
-</div>
+{$personalDataLinks}
