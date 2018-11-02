@@ -101,7 +101,7 @@ function admin_load()
                     $profileLink = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
                     $withContent = $row['with_content'] ? $lang->yes : $lang->no;
 
-                    $popup = new \PopupMenu('controls', $lang->options);
+                    $popup = new \PopupMenu('controls_' . $row['id'], $lang->options);
                     $popup->add_item($lang->amnesia_admin_approve, $pageUrl . '&amp;approve=' . $row['id']);
                     $popup->add_item($lang->amnesia_admin_cancel, $pageUrl . '&amp;cancel=' . $row['id']);
                     $controls = $popup->fetch();
