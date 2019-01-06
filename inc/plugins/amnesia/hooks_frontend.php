@@ -125,7 +125,7 @@ function global_end(): void
             exit;
         } elseif (\amnesia\privacyPolicyAgreementRequiredForCurrentUser()) {
             $lang->load('amnesia');
-            \redirect(\amnesia\getPrivacyPolicyUrl(), $lang->amnesia_privacy_policy_agreement_required);
+            \redirect(\amnesia\getPrivacyPolicyUrl(), $lang->amnesia_privacy_policy_agreement_required, '', true);
         }
     }
 }
@@ -164,7 +164,7 @@ function usercp_start()
                         if (\validate_password_from_uid($mybb->user['uid'], $mybb->get_input('password'))) {
                             if (!\is_super_admin($mybb->user['uid'])) {
                                 \amnesia\createErasureRequest($mybb->user, (bool)$mybb->get_input('with_content'), $mybb->get_input('comment'));
-                                \redirect('usercp.php', $lang->amnesia_personal_data_erasure_requested);
+                                \redirect('usercp.php', $lang->amnesia_personal_data_erasure_requested, '', true);
                             } else {
                                 $errors[] = $lang->amnesia_personal_data_erasure_no_super_admin;
                             }
@@ -234,7 +234,7 @@ function usercp_start()
 
                         \amnesia\setSessionTokenForExportRequest($request);
 
-                        \redirect('usercp.php', $lang->amnesia_personal_data_export_requested);
+                        \redirect('usercp.php', $lang->amnesia_personal_data_export_requested, '', true);
                     } else {
                         $errors[] = $lang->error_invalidpassword;
                     }
@@ -330,7 +330,7 @@ function misc_help_helpdoc_end(): void
                             $redirectUrl = $mybb->settings['bburl'];
                         }
 
-                        \redirect($redirectUrl, $lang->amnesia_privacy_policy_accepted);
+                        \redirect($redirectUrl, $lang->amnesia_privacy_policy_accepted, '', true);
                     }
                 } else {
                     \error($lang->invalid_post_code);
