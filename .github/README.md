@@ -1,6 +1,11 @@
+<img align="left" src="https://raw.githubusercontent.com/kawaii/mybb-amnesia/master/.github/logomark-trim.png" height="80">
+
 # Amnesia
 
 **A MyBB Native Extension to Support Information Administration.** Aims to implement main policies introduced by the EU's General Data Protection Regulation (GDPR).
+
+[**Plugin on Extend MyBB**](https://community.mybb.com/mods.php?action=view&pid=1282) |  [MyBB Community &rsaquo; Plugin Support](https://community.mybb.com/forum-72.html)
+
 
 ### Features
 
@@ -17,6 +22,8 @@
 - MyBB >= 1.8.15
 - https://github.com/frostschutz/MyBB-PluginLibrary
 - PHP >= 7.1
+
+---
 
 ### 3rd Party Integration
 - #### Personal Data Fields
