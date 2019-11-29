@@ -36,6 +36,7 @@ function global_start(): void
                 \amnesia\loadTemplates([
                     'personal_data_export',
                     'personal_data_export_verify',
+                    'personal_data_export_initiate',
                 ], 'amnesia_');
             } else {
                 \amnesia\loadTemplates([
