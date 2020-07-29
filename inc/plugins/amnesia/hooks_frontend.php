@@ -199,13 +199,24 @@ function usercp_start()
                 }
 
                 $description = $lang->amnesia_personal_data_erasure_description;
+                $instructions = $lang->amnesia_personal_data_erasure_verification_code;
+
+                if (\amnesia\getSettingValue('personal_data_erasure_type') == 'anonymization') {
+                    $description .= ' ' . $lang->amnesia_personal_data_erasure_anonymization;
+                } elseif (\amnesia\getSettingValue('personal_data_erasure_type') == 'deletion') {
+                    $description .= ' ' . $lang->amnesia_personal_data_erasure_deletion;
+                }
+
+                if (!\amnesia\getSettingValue('personal_data_erasure_content') || \amnesia\getSettingValue('personal_data_erasure_type') != 'deletion') {
+                    $description .= ' ' . $lang->amnesia_personal_data_erasure_no_content;
+                }
 
                 if (\amnesia\getSettingValue('personal_data_erasure_waiting_period_days') != 0) {
-                    $description .= ' ' . $lang->sprintf($lang->amnesia_personal_data_erasure_waiting_period_days, \amnesia\getSettingValue('personal_data_erasure_waiting_period_days'));
+                    $instructions .= ' ' . $lang->sprintf($lang->amnesia_personal_data_erasure_waiting_period_days, \amnesia\getSettingValue('personal_data_erasure_waiting_period_days'));
                 }
 
                 if (\amnesia\getSettingValue('personal_data_erasure_approval')) {
-                    $description .= ' ' . $lang->amnesia_personal_data_erasure_approval;
+                    $instructions .= ' ' . $lang->amnesia_personal_data_erasure_approval;
                 }
 
                 if (\amnesia\getSettingValue('personal_data_erasure_content') && \amnesia\getSettingValue('personal_data_erasure_type') == 'deletion') {

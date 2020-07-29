@@ -8,11 +8,15 @@ $l['amnesia_privacy_policy_date_last_read'] = 'Accepted {1}';
 $l['amnesia_privacy_policy_accepted'] = 'Thank you, you will now be redirected back.';
 
 $l['amnesia_personal_data_erasure'] = 'Personal Data Erasure';
-$l['amnesia_personal_data_erasure_description'] = 'Here you can request the erasure of your personal data which will also <strong>permanently disable your account</strong>. A verification code will be sent to your email address in order to confirm your request.';
+$l['amnesia_personal_data_erasure_description'] = 'Here you can request the erasure of your personal data.';
+$l['amnesia_personal_data_erasure_anonymization'] = 'This operation will anonymize and <strong>permanently disable your account</strong>.';
+$l['amnesia_personal_data_erasure_deletion'] = 'This operation will <strong>permanently delete your account</strong>.';
+$l['amnesia_personal_data_erasure_no_content'] = 'Submitted content like posts and threads will not be removed.';
+$l['amnesia_personal_data_erasure_verification_code'] = 'A verification code will be sent to your email address in order to confirm your request.';
 $l['amnesia_personal_data_erasure_waiting_period_days'] = 'The data will be removed after {1} days, during which you will be able to cancel the operation after logging in.';
 $l['amnesia_personal_data_erasure_approval'] = 'Your data will be removed once the administrator approves your request.';
 $l['amnesia_personal_data_erasure_options'] = 'Erasure Options';
-$l['amnesia_personal_data_erasure_content'] = 'Remove Posted Content';
+$l['amnesia_personal_data_erasure_content'] = 'Remove Submitted Content';
 $l['amnesia_personal_data_erasure_content_description'] = 'Choose whether content posted from your account (posts, threads, etc.) should be also removed.';
 $l['amnesia_personal_data_erasure_comment'] = 'Comment';
 $l['amnesia_personal_data_erasure_comment_description'] = 'You can include any additional details related to your request for the board administrator.';

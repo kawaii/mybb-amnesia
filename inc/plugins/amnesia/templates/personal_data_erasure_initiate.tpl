@@ -5,6 +5,8 @@
     <tr>
         <td class="trow1" colspan="2">
             {$description}
+            <br><br>
+            {$instructions}
         </td>
     </tr>
     <tr>
