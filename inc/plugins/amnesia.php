@@ -26,7 +26,7 @@ function amnesia_info()
         'website'       => '',
         'author'        => 'MyBB Community',
         'authorsite'    => '',
-        'version'       => '1.0',
+        'version'       => '1.0.1',
         'codename'      => 'amnesia',
         'compatibility' => '18*',
     ];
