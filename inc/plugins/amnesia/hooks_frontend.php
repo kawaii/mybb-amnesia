@@ -415,21 +415,23 @@ function member_do_register_end(): void
 
 function no_permission(): void
 {
-    global $lang, $footer;
+    global $mybb, $lang, $footer;
 
-    $lang->load('amnesia');
+    if ($mybb->user['uid'] != 0) {
+        $lang->load('amnesia');
 
-    $links = '';
+        $links = '';
 
-    if (\amnesia\getSettingValue('personal_data_export')) {
-        $url = 'usercp.php?action=personal_data_export';
-        eval('$links .= "' . \amnesia\tpl('personal_data_export_link') . '";');
+        if (\amnesia\getSettingValue('personal_data_export')) {
+            $url = 'usercp.php?action=personal_data_export';
+            eval('$links .= "' . \amnesia\tpl('personal_data_export_link') . '";');
+        }
+
+        if (\amnesia\getSettingValue('personal_data_erasure_type') != 'none') {
+            $url = 'usercp.php?action=personal_data_erasure';
+            eval('$links .= "' . \amnesia\tpl('personal_data_erasure_link') . '";');
+        }
+
+        eval('$footer = "' . \amnesia\tpl('personal_data_links') . '" . $footer;');
     }
-
-    if (\amnesia\getSettingValue('personal_data_erasure_type') != 'none') {
-        $url = 'usercp.php?action=personal_data_erasure';
-        eval('$links .= "' . \amnesia\tpl('personal_data_erasure_link') . '";');
-    }
-
-    eval('$footer = "' . \amnesia\tpl('personal_data_links') . '" . $footer;');
 }
