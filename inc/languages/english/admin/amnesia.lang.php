@@ -19,6 +19,7 @@ $l['amnesia_admin_scheduled_date'] = 'Scheduled for';
 $l['amnesia_admin_action_date'] = 'Erased';
 $l['amnesia_admin_with_content'] = 'Content';
 $l['amnesia_admin_comment'] = 'Comment';
+$l['amnesia_admin_view_profile'] = 'View Profile';
 $l['amnesia_admin_approve'] = 'Approve';
 $l['amnesia_admin_cancel'] = 'Cancel';
 $l['amnesia_admin_personal_data_erasure_requests_unapproved_empty'] = 'No requests awaiting approval.';

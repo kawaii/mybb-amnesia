@@ -98,15 +98,17 @@ function admin_load()
 
             if ($db->num_rows($query)) {
                 while ($row = $db->fetch_array($query)) {
-                    $profileLink = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
+                    $forumProfileUrl = $mybb->settings['bburl'] . '/' . get_profile_link($row['user_id']);
+                    $adminProfileLink = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
                     $withContent = $row['with_content'] ? $lang->yes : $lang->no;
 
                     $popup = new \PopupMenu('controls_' . $row['id'], $lang->options);
+                    $popup->add_item($lang->amnesia_admin_view_profile, $forumProfileUrl);
                     $popup->add_item($lang->amnesia_admin_approve, $pageUrl . '&amp;approve=' . $row['id']);
                     $popup->add_item($lang->amnesia_admin_cancel, $pageUrl . '&amp;cancel=' . $row['id']);
                     $controls = $popup->fetch();
 
-                    $table->construct_cell($profileLink, ['class' => 'align_center']);
+                    $table->construct_cell($adminProfileLink, ['class' => 'align_center']);
                     $table->construct_cell(\my_date('relative', $row['date']), ['class' => 'align_center']);
                     $table->construct_cell(\my_date('relative', $row['scheduled_date']), ['class' => 'align_center']);
                     $table->construct_cell($withContent, ['class' => 'align_center']);
@@ -152,10 +154,10 @@ function admin_load()
 
             if ($db->num_rows($query)) {
                 while ($row = $db->fetch_array($query)) {
-                    $profileLink = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
+                    $adminProfileLink = '<a href="index.php?module=user-users&amp;action=edit&amp;uid=' . $row['user_id'] . '">' . \htmlspecialchars_uni($row['username']) . '</a>';
                     $withContent = $row['with_content'] ? $lang->yes : $lang->no;
 
-                    $table->construct_cell($profileLink, ['class' => 'align_center']);
+                    $table->construct_cell($adminProfileLink, ['class' => 'align_center']);
                     $table->construct_cell(\my_date('relative', $row['date']), ['class' => 'align_center']);
                     $table->construct_cell(\my_date('relative', $row['scheduled_date']), ['class' => 'align_center']);
                     $table->construct_cell($withContent, ['class' => 'align_center']);
