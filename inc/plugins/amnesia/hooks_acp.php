@@ -188,6 +188,7 @@ function admin_load()
 
             $listManager = new \amnesia\ListManager([
                 'mybb'          => $mybb,
+                'db'            => $db,
                 'baseurl'       => $pageUrl . '&amp;action=completed',
                 'order_columns' => ['id', 'username', 'date', 'scheduled_date', 'action_date', 'with_content', 'comment'],
                 'order_dir'     => 'desc',

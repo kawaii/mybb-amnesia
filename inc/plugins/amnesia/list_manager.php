@@ -23,12 +23,14 @@ class ListManager
     public $limit;
 
     private $mybb;
+    private $db;
     private $baseUrl;
     private $inAcp;
 
     public function __construct($data, $manualDetect = false)
     {
         $this->mybb = $data['mybb'];
+        $this->db = $data['db'];
         $this->baseUrl = $data['baseurl'];
 
         $this->orderColumns = [];
@@ -40,7 +42,7 @@ class ListManager
                     $this->orderColumns[] = $value;
                 } else {
                     $this->orderColumns[] = $key;
-                    $this->orderColumnsAliases[$value] = $key;
+                    $this->orderColumnsAliases[$key] = $value;
                 }
             }
         }
@@ -94,7 +96,7 @@ class ListManager
             $pointer = '&darr;';
         }
 
-        if ($column == $this->orderColumn || $column == $this->orderColumnAlias) {
+        if ($column === $this->orderColumn || $column === $this->orderColumnAlias) {
             $active = true;
         } else {
             $active = false;
@@ -132,7 +134,7 @@ class ListManager
         $sql = null;
 
         if ($this->orderColumn && $this->orderDirection) {
-            $sql .= "`" . $this->orderColumn . "` " . strtoupper($this->orderDirection);
+            $sql .= $this->escapeColumnName($this->orderColumn) . " " . strtoupper($this->orderDirection);
 
             if ($this->orderExtend) {
                 $sql .= ($sql ? ', ' : null) . $this->orderExtend;
@@ -177,11 +179,16 @@ class ListManager
         if ($this->orderColumns) {
             if (
                 $this->inputEnabled &&
-                $this->getInput('sortby') !== null &&
-                in_array($this->getInput('sortby'), $this->orderColumns)
+                $this->getInput('sortby') !== null
             ) {
-                $this->setOrderColumn($this->getInput('sortby'));
-            } elseif (!$this->orderColumn) {
+                if (in_array($this->getInput('sortby'), $this->orderColumns)) {
+                    $this->setOrderColumn($this->getInput('sortby'));
+                } elseif ($aliasedColumn = array_search($this->getInput('sortby'), $this->orderColumnsAliases)) {
+                    $this->setOrderColumn($aliasedColumn);
+                }
+            }
+
+            if (!$this->orderColumn) {
                 $this->setOrderColumn($this->orderColumns[0]);
             }
         }
@@ -242,11 +249,11 @@ class ListManager
     public function setOrderColumn($columnName)
     {
         if (in_array($columnName, $this->orderColumns)) {
-            if ($aliasedColumn = array_search($columnName, $this->orderColumnsAliases)) {
-                $this->orderColumn = $aliasedColumn;
-                $this->orderColumnAlias = $columnName;
+            $this->orderColumn = $columnName;
+
+            if (isset($this->orderColumnsAliases[$columnName])) {
+                $this->orderColumnAlias = $this->orderColumnsAliases[$columnName];
             } else {
-                $this->orderColumn = $columnName;
                 $this->orderColumnAlias = null;
             }
 
@@ -279,5 +286,16 @@ class ListManager
             ? $this->mybb->input[$this->inputPrefix . $name]
             : null
             ;
+    }
+
+    private function escapeColumnName($name)
+    {
+        if (in_array($this->db->type, ['pgsql', 'sqlite'])) {
+            $delimiter = '"';
+        } else {
+            $delimiter = '`';
+        }
+
+        return $delimiter . $name . $delimiter;
     }
 }
