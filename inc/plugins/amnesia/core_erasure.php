@@ -9,7 +9,7 @@ function createErasureRequest(array $user, bool $withContent = false, string $co
 
     $verificationCode = \random_str(40);
 
-    $db->replace_query('erasure_requests', [
+    $db->insert_query('erasure_requests', [
         'user_id' => (int)$user['uid'],
         'with_content' => (int)$withContent,
         'comment' => $db->escape_string($comment),
@@ -193,7 +193,7 @@ function completeErasureRequest(array $request): bool
                 !\amnesia\getSettingValue('personal_data_erasure_approval')
             ) &&
             $request['scheduled_date'] <= \TIME_NOW &&
-            !\is_super_admin($request['uid'])
+            !\is_super_admin($request['user_id'])
         ) {
             switch (\amnesia\getSettingValue('personal_data_erasure_type')) {
                 case 'anonymization':
@@ -262,7 +262,7 @@ function cancelErasureRequest(array $request): bool
     global $db, $plugins;
 
     if ($request) {
-        $result = $db->delete_query('erasure_requests', 'id=' . (int)$request['id']);
+        $result = (bool)$db->delete_query('erasure_requests', 'id=' . (int)$request['id']);
 
         $result &= (bool)$db->update_query('users', [
             'personal_data_erasure_pending' => 0,
@@ -371,7 +371,7 @@ function deleteUser(int $userId, bool $withContent = false): bool
 
 function deleteUserContentMetadata(int $userId): bool
 {
-    global $db;
+    global $mybb, $db;
 
     $result = true;
 
@@ -379,9 +379,17 @@ function deleteUserContentMetadata(int $userId): bool
 
     foreach ($fieldDefinitions as $tableName => $table) {
         if (!empty($table['fields'])) {
-            $rowUpdates = \amnesia\getErasureRowUpdatesForFields($table['fields']);
+            $rowUpdates = \amnesia\getErasureRowUpdatesForFields($table['fields'], $table);
 
-            $result &= $db->update_query($tableName, $rowUpdates, 'uid=' . (int)$userId);
+            foreach ($rowUpdates as $columnName => $value) {
+                if (!empty($mybb->binary_fields[$tableName][$columnName])) {
+                    $rowUpdates[$columnName] = $db->escape_binary($value);
+                } else {
+                    $rowUpdates[$columnName] = $db->escape_string($value);
+                }
+            }
+
+            $result &= (bool)$db->update_query($tableName, $rowUpdates, 'uid=' . (int)$userId);
         }
     }
 

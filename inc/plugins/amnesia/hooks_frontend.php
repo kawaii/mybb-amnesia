@@ -191,11 +191,11 @@ function usercp_start()
                 }
             }
 
+            $errorMessage = '';
+
             if (!isset($content)) {
                 if ($errors) {
                     $errorMessage = \inline_error($errors);
-                } else {
-                    $errorMessage = '';
                 }
 
                 $description = $lang->amnesia_personal_data_erasure_description;
@@ -284,11 +284,11 @@ function usercp_start()
                 }
             }
 
+            $errorMessage = '';
+
             if (!isset($content)) {
                 if ($errors) {
                     $errorMessage = \inline_error($errors);
-                } else {
-                    $errorMessage = '';
                 }
 
                 eval('$content = "' . \amnesia\tpl('personal_data_export_initiate') . '";');

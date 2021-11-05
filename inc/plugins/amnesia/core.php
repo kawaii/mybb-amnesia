@@ -10,6 +10,7 @@ function getPersonalAccountDataFields(): array
         'username',
         'email',
         'avatar',
+        'avatartype',
         'usertitle',
         'website',
         'icq',
@@ -161,7 +162,7 @@ function formatUserAccountDataForOutput(array $user): array
     return $user;
 }
 
-function formatDatabaseValueForOutput(string $value, string $type): string
+function formatDatabaseValueForOutput($value, string $type): string
 {
     global $db, $plugins;
 
